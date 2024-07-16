@@ -3,7 +3,7 @@ import numpy as np
 import math
 import random
 import time
-import gym
+import gymnasium  as gym
 import gym_game
 
 
@@ -13,7 +13,7 @@ def simulate():
     for episode in range(MAX_EPISODES):
 
         # Init environment
-        state = env.reset()
+        state, info = env.reset()
         total_reward = 0
 
         # AI tries up to MAX_TRY times
@@ -57,7 +57,7 @@ def simulate():
                 action = encodeAction([action1, 6])
 
             # Do action and get reward
-            next_state, reward, done, _ = env.step(action)
+            next_state, reward, terminated, truncated, info = env.step(action)
             # Adding the two rewards of the two boxes
             total_reward += reward[0] + reward[1]
 
@@ -95,9 +95,10 @@ def simulate():
                 time.sleep(0.1)
 
             # When episode is done, print reward
-            if done or t >= MAX_TRY - 1:
+            if terminated or truncated or t >= MAX_TRY - 1:
                 print("Episode %d finished after %i time steps with total reward = %f and epsilon = %g." % (
                     episode, t, total_reward, epsilon))
+                env.reset()
                 break
 
         # Exploring rate decay
@@ -199,7 +200,7 @@ def destination(pos, l):
 
 # Main method
 if __name__ == "__main__":
-    env = gym.make("Pygame-v0")
+    env = gym.make("Pygame-v0", apply_api_compatibility=True)
     MAX_EPISODES = 9999
     MAX_TRY = 1000
     epsilon = 1

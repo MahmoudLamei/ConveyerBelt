@@ -1,5 +1,5 @@
-import gym
-from gym import spaces
+import gymnasium as gym
+from gymnasium import spaces
 import numpy as np
 from gym_game.envs.pygame_2d import PyGame2D2
 
@@ -12,7 +12,7 @@ class CustomEnv(gym.Env):
         self.action_space = spaces.Discrete(6)
         # Observation space with the X and Y and their max valuse which are 10 and 6
         self.observation_space = spaces.Box(
-            np.array([0, 0]), np.array([10, 6]), dtype=np.int)
+            np.array([0, 0]), np.array([10, 6]), dtype=int)
 
     # Reseting the game
     def reset(self):
